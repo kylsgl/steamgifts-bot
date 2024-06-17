@@ -65,8 +65,8 @@ async function joinGiveawaysFromURLS(
 				page.waitForSelector('div[data-do="entry_insert"]', { timeout: 5_000 }),
 				page.click('div[data-do="entry_insert"]'),
 			]);
-		} catch (error: unknown) {
-			console.error(error);
+		} catch {
+			console.error('Failed to join:', url);
 		} finally {
 			// eslint-disable-next-line no-await-in-loop
 			await page.close();
@@ -87,11 +87,10 @@ export async function joinGiveaways(
 
 	const urls: string[] = await getGiveaways(page);
 
-	await joinGiveawaysFromURLS(browser, urls);
-
 	console.info(
 		`[${new Date().toLocaleString()}]`,
-		`Joining ${urls.length}\n`,
-		urls.join(',\n'),
+		`Joining ${urls.length}\n${urls.join(',\n')}`,
 	);
+
+	await joinGiveawaysFromURLS(browser, urls);
 }

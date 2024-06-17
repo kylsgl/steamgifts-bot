@@ -1,4 +1,5 @@
 import { type PuppeteerLaunchOptions, type Viewport } from 'puppeteer';
+import UserAgent from 'user-agents';
 
 export const BLOCKED_TYPES = new Set<string>([
 	'cspviolationreport',
@@ -19,6 +20,7 @@ export const PUPPETEER_ARGS: PuppeteerLaunchOptions = {
 		'--disable-background-networking',
 		'--disable-background-timer-throttling',
 		'--disable-backgrounding-occluded-windows',
+		'--disable-blink-features=AutomationControlled',
 		'--disable-breakpad',
 		'--disable-client-side-phishing-detection',
 		'--disable-component-update',
@@ -58,3 +60,8 @@ export const PUPPETEER_ARGS: PuppeteerLaunchOptions = {
 	devtools: false,
 	headless: true,
 };
+
+export const USER_AGENT = new UserAgent({
+	deviceCategory: 'desktop',
+	platform: 'Linux x86_64',
+});

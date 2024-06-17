@@ -4,7 +4,7 @@ import puppeteer, {
 	type Page,
 } from 'puppeteer';
 
-import { BLOCKED_TYPES, PUPPETEER_ARGS } from './constants';
+import { BLOCKED_TYPES, PUPPETEER_ARGS, USER_AGENT } from './constants';
 
 function handleBlockedTypes(request: HTTPRequest): void {
 	if (BLOCKED_TYPES.has(request.resourceType())) {
@@ -23,15 +23,11 @@ function handleBlockedTypes(request: HTTPRequest): void {
 export async function newPage(browser: Browser, url: string): Promise<Page> {
 	const page = await browser.newPage();
 
+	await page.setUserAgent(USER_AGENT.random().toString());
+
 	await page.setRequestInterception(true);
 
 	page.on('request', handleBlockedTypes);
-
-	await page.setUserAgent(
-		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
-	);
-
-	// await page.setViewport(DEFAULT_VIEWPORT);
 
 	await page.goto(url);
 
