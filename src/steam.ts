@@ -9,7 +9,7 @@ export default async function steamLogin(page: Page): Promise<void> {
 		throw new Error('Invalid Steam credentials');
 	}
 
-	const steamLoginSelector = 'a[href="/?login"]';
+	const steamLoginSelector = 'header a[href^="/?login"]';
 
 	/**
 	 * Exit if login button is not found

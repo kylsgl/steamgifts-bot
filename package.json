@@ -1,6 +1,6 @@
 {
 	"name": "steamgifts-bot",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"author": "kylsgl",
 	"license": "MIT",
 	"private": true,
@@ -21,15 +21,15 @@
 	},
 	"dependencies": {
 		"cron": "^3.1.7",
-		"puppeteer": "^22.11.1",
-		"user-agents": "^1.1.238"
+		"puppeteer": "^22.13.0",
+		"user-agents": "^1.1.265"
 	},
 	"devDependencies": {
-		"@types/node": "^20.14.2",
+		"@types/node": "^20.14.10",
 		"@types/user-agents": "^1.0.4",
-		"@typescript-eslint/eslint-plugin": "^7.13.0",
-		"@typescript-eslint/parser": "^7.13.0",
-		"esbuild": "^0.21.5",
+		"@typescript-eslint/eslint-plugin": "^7.16.0",
+		"@typescript-eslint/parser": "^7.16.0",
+		"esbuild": "^0.23.0",
 		"eslint": "^8.57.0",
 		"eslint-config-airbnb-base": "^15.0.0",
 		"eslint-config-airbnb-typescript": "^18.0.0",
@@ -38,16 +38,16 @@
 		"eslint-plugin-import": "^2.29.1",
 		"eslint-plugin-n": "^17.9.0",
 		"eslint-plugin-perfectionist": "^2.11.0",
-		"eslint-plugin-promise": "^6.2.0",
+		"eslint-plugin-promise": "^6.4.0",
 		"eslint-plugin-regexp": "^2.6.0",
-		"eslint-plugin-simple-import-sort": "^12.1.0",
+		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"eslint-plugin-sonarjs": "^0.25.1",
 		"eslint-plugin-total-functions": "^7.1.0",
 		"eslint-plugin-tsdoc": "^0.3.0",
 		"eslint-plugin-unicorn": "^54.0.0",
 		"husky": "^9.0.11",
-		"prettier": "^3.3.2",
-		"tsx": "^4.15.5",
-		"typescript": "^5.4.5"
+		"prettier": "^3.3.3",
+		"tsx": "^4.16.2",
+		"typescript": "^5.5.3"
 	}
 }

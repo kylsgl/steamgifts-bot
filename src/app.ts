@@ -7,7 +7,8 @@ import { newBrowser, newPage } from './utils';
 
 async function app(): Promise<void> {
 	const steamGiftsURL: string =
-		process.env.STEAMGIFTS_URL ?? 'https://www.steamgifts.com/';
+		process.env.STEAMGIFTS_URL ??
+		'https://www.steamgifts.com/giveaways/search?type=new';
 
 	const url = new URL(steamGiftsURL);
 
@@ -16,15 +17,15 @@ async function app(): Promise<void> {
 	try {
 		const page = await newPage(browser, url.href);
 
-		await joinGiveaways(browser, page);
+		await joinGiveaways(browser, page, url.href);
 
 		/**
-		 * Run every 4 hours
+		 * 192 points every 8 hours
 		 */
 		CronJob.from({
-			cronTime: process.env.CRON ?? '* */4 * * *',
+			cronTime: process.env.CRON ?? '* */8 * * *',
 			onTick: (): void => {
-				joinGiveaways(browser, page).catch((error: unknown): void => {
+				joinGiveaways(browser, page, url.href).catch((error: unknown): void => {
 					console.error(error);
 				});
 			},

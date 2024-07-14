@@ -5,7 +5,15 @@ import { newPage } from './utils';
 
 export async function getGiveaways(page: Page): Promise<string[]> {
 	return page.evaluate((): string[] => {
-		const currentDate: number = Date.now();
+		const usePoints = Number(
+			document.body.querySelector('span.nav__points')?.textContent,
+		);
+
+		if (Number.isNaN(usePoints) || usePoints <= 0) {
+			return [];
+		}
+
+		let currentPoints: number = usePoints;
 
 		const giveaways: HTMLDivElement[] = [
 			...document.body.querySelectorAll<HTMLDivElement>(
@@ -15,27 +23,30 @@ export async function getGiveaways(page: Page): Promise<string[]> {
 
 		return giveaways.reduce(
 			(accumulator: string[], element: HTMLDivElement): string[] => {
-				const unixTimeStamp: string | null | undefined = element
-					.querySelector<HTMLSpanElement>('span[data-timestamp]')
-					?.getAttribute('data-timestamp');
+				/**
+				 * Giveaway entries may contain multiple 'span.giveaway__heading__thin' elements
+				 * Element 'span.giveaway__heading__thin' with cost text is always last in the array
+				 */
+				const costText: string | undefined = [
+					...element.querySelectorAll<HTMLSpanElement>(
+						'span.giveaway__heading__thin',
+					),
+				]
+					.at(-1)
+					?.textContent?.replaceAll(/\D/g, '');
 
-				const unixTimeStampNum = Number(unixTimeStamp);
+				const cost = Number(costText);
 
-				if (!Number.isNaN(unixTimeStamp) && unixTimeStampNum > 0) {
-					const convertedDate: number = unixTimeStampNum * 1_000;
+				if (!Number.isNaN(cost) && currentPoints >= cost) {
+					currentPoints -= cost;
 
-					/**
-					 * Only add giveaways that will end within an hour
-					 */
-					if (convertedDate - currentDate <= 3_600_000) {
-						const href: string | undefined =
-							element.querySelector<HTMLAnchorElement>(
-								'a.giveaway__heading__name',
-							)?.href;
+					const href: string | undefined =
+						element.querySelector<HTMLAnchorElement>(
+							'a.giveaway__heading__name',
+						)?.href;
 
-						if (href !== undefined) {
-							accumulator.push(href);
-						}
+					if (href !== undefined) {
+						accumulator.push(href);
 					}
 				}
 
@@ -77,10 +88,11 @@ async function joinGiveawaysFromURLS(
 export async function joinGiveaways(
 	browser: Browser,
 	page: Page,
+	url: string,
 ): Promise<void> {
 	await Promise.all([
 		page.waitForNavigation({ waitUntil: 'networkidle0' }),
-		page.reload(),
+		page.goto(url),
 	]);
 
 	await steamLogin(page);
